@@ -1,0 +1,143 @@
+\documentclass[twoside,a4paper]{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{mathrsfs}
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+
+\begin{document}
+
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{Xue Sen (3160104429)}
+\chead{Numerical Approximation homework \#9}
+\rhead{Date}
+
+\section*{I. Prove the QR Theorem}
+Since it is not necessary that $rank(A) \neq 0$\\
+$A=[\beta_1 \ \beta_2 \ \beta_3 \ ... \ \beta_n]$.\\
+From $\beta_1$ to $\beta_n$, if $\beta_i$ is linear independent, let $\beta_i$ join in $\{\alpha_j\}$, otherwise drop it if $\beta_i$ is not independent with $\beta_1,\beta_2,...\beta_{i-1}$\\
+For a group of bases $\alpha_1,...,\alpha_m$ in a inner product space.\\
+Let:\\
+$b_1=\alpha_1, \quad e_1=b_1/||b_1||$.\\
+$b_2=\alpha_2-\left<\alpha_2,e_1 \right>e_1 \quad e_2=b_2/||b_2||$.\\
+...\\
+$b_m=\alpha_m-\sum_{i=1}^{m-1} \left<\alpha_m,e_i \right>e_i  \quad e_n=b_m/||b_m||$.\\
+$b_i$ are a group of bases.\\
+And in another way:\\
+$\alpha_i=b_i+\sum_{j=1}^{j=i-1} \left<\alpha_m,e_i \right>e_i$\\
+And Since we let $Q=[e_1 \ e_2 \ e_3 \ ... \ e_m]$ \\
+$QQ^{T}=I$\\
+Since for a non-independent vector in A, by the way we choose them, it can be expressed by the vectors ahead, so it can also be expressed by the $\{e_i\}$ found by Schmidt process, which means in the matrix it would \textbf{not} beyond the diagonal.\\
+$A=[\beta_1 \ \beta_2 \ \beta_3 \ ... \ \beta_n]=[\alpha_1 \ \alpha_2 \ \alpha_3  \ \sum k_i\alpha_i  \ ... \ \alpha_m]=[e_1 \ e_2 \ e_3 \ ... \ e_m]
+\begin{bmatrix}
+||b_1|| & \left<\alpha_2,e_1 \right>&\left<\alpha_3,e_1 \right>&...&\sum&...\\
+0       & ||b_2||                   & \left<\alpha_3,e_2 \right>&...&\sum&...\\
+0       &  0                        &   ||b_3||                 &...&\sum&...\\
+0       & 0                         &0                          &... &... &...\\
+...     &                           &                           &0   &...&...\\
+0       &0                          & 0                         &0   &...&...\\
+\end{bmatrix}
+$\\
+The matrix on the right is clearly an upper triangular matrix.\\
+\section*{II. This question is about Simpson's rule and composite Simpson's rule}
+\subsection*{II-a}
+Clearly, using Hermite method we can get a quadratic polynomial in interval $(-1,0)$ and $(0,1)$, and then we have the equation like the original one $$I^S (f)=\frac{(b-a)}{6}[f(a)+4f((a+b)/2)+f(b)]$$ 
+\subsection*{II-b}
+$$
+E^S(f) = \frac{-(b -a)^5}{2880}f^{(4)}(\xi)$$
+\subsection*{II-c}
+For every signal interval, $x_i=a+ih,  \ h=(b-a)/n$ we use Simpson method:\\
+$$ S_n=h/6 \sum_{i=0}^{n-1}[f(x_i)+4f(x_{i+1/2})+f(x_{i+1})]$$
+Using the $E_2 f$ in a signal interval which is $$ E_2(f)=- \frac{(b-a)^5}{2880} f^{(4)}(\xi)$$\\
+By sum them up \\
+$$E_2(f)=\sum_{i=0}^{n-1} \frac{-h^5}{2880} f^{(4)}(\xi_i)$$
+because $f^{(4)}(\xi)$ continues in $[a,b]$, we can find $\xi_s$ \\
+$$1/n \sum_{i=0}^{n-1}f^{(4)}(\xi_i)= f^{(4)}(\xi_s)$$
+So $$E_2(f)=\frac{(b-a)h^4}{-2880}f^{(4)}(\xi)$$
+
+\section*{III. This question asked to estimate the number of subintervals to achieve the request.}
+\subsection*{III-a}
+By \\$$ I(f)=\int_{a}^b f(x) dx= \sum_{i=0}^{n-1} \int_{x_i}^{x_{i+1}} f(x) dx =T_n-\frac{h^3}{12} \sum_{i=0}^{n-1} f''(\xi_i)$$
+$|I(f)-T_n|=\displaystyle\frac{(b-a)h^2}{12}f''(\xi)$\\
+Supposing that $f''(\xi)$ achieves its max, which is $2/e$ and $h=1/m$.\\
+$\displaystyle\frac{(b-a)h^2}{12}f''(\xi)\textless 5*10^{-7}$\\
+only when $m \textgreater 350$, which means the number of subintervals must be more than 350.\\
+\subsection*{III-b}
+In the same way as (a), \\
+$$|I(f)-S_n|=\displaystyle\frac{(b-a)h^4}{2880}f^{(4)}(\xi) $$\\
+Supposing that $f''(\xi)$ achieves its max, which is $12$ and $h=1/m$.\\
+$\displaystyle\frac{(b-a)h^4}{2880}f^{(4)}(\xi)\textless 5*10^{-7}$\\
+only when $m \ge 10$, which means the number of subintervals must be at least 10.\\
+\section*{IV. This question is about Gauss-Laguerre}
+\subsection*{IV-a}
+We can suppose that $p(t)=t+c$ \\$
+\int_{0}^{\infty} p(t) \pi _2(t) \rho(t) dt=6+2a+b+2c+ac+bc$\\
+So that \\
+$c(a+b+2)+6+2a+b=0$\\
+a=-4, b=2.\\
+$\pi_2(t)=t^2-4t+2t$.\\
+\subsection*{IV-b}
+Since it is two-point G-L formula\\
+for polynomials whose order is less than 2n, $1 \ x, \ x^2, \ x^3$\\ 
+$
+\begin{cases}
+w_1+w_2= \int_{0}^{\infty} e^{-t} dt=1\\
+w_1 x_1+w_2 x_2=\int_{0}^{\infty} x e^{-t} dt =1 \\
+w_1 x^2 _1+w_2 x^2 _2 =\int_{0}^{\infty} x^2 e^{-t} dt=2 \\
+w_1 x^3 _1+w_2 x^2 _3 =\int_{0}^{\infty} x^3 e^{-t} dt=6\\
+\end{cases}\\
+$
+by solving the equations\\
+$
+\begin{cases}
+x_1=2-\sqrt{3}\\
+w_1=\frac{3+\sqrt{3}}{6}\\
+\end{cases}
+\quad
+\begin{cases}
+x_2=2+\sqrt{3}\\
+w_2=\frac{3-\sqrt{3}}{6}\\
+\end{cases}
+$
+and \\
+$E_2(f)= \int_{0}^{\infty} \rho(x) f(x) dx -\sum_{i=1}^{2} A_i f(x_i)=\frac{f^{(4)}(\tau)}{24} \int_{0}^{\infty} \rho(x) \omega(x) ^2 dx$, in which $\omega(x)=(x-x_1)(x-x_2)$\\
+\subsection*{IV-c}
+By (b) we know that:
+$$I_2 (f)=\frac{3+\sqrt{3}}{6}f(2-\sqrt{3})+\frac{3-\sqrt{3}}{6}f(2+\sqrt{3})$$
+because $f=1/(1+t)$\\
+$I_2(f)=0.6666666...$\\
+The true error is 0.0703.\\
+Since $f^{(4)}=24/(x + 1)^5$ and $\int_{0}^{\infty} \rho(x) \omega(x) ^2 dx=5$\\
+we can solve that $\tau =0.3797$
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
